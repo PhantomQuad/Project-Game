@@ -14,7 +14,7 @@ class Room {
     }
 
     get character() {
-        return this._character
+        return this._character;
     }
     
     set name(value) {
@@ -71,6 +71,7 @@ class Character {
         this._description = "";
         this._pronoun = "";
         this._conversation = "";
+        this._item = "";
     }
 
     get name() {
@@ -87,6 +88,10 @@ class Character {
 
     get conversation() {
         return this._conversation;
+    }
+
+    get item() {
+        return this._item;
     }
 
     set name(value) {
@@ -112,6 +117,10 @@ class Character {
         }
         this._conversation = value;
     }
+
+    set item(value) {
+        this._item = value;
+      }
     
     describe(){
         return "You have met " + this._name + ", " + this._name + " is " + this._description;
@@ -119,6 +128,10 @@ class Character {
 
     converse() {
         return this._name + " says " + "'" + this._conversation + "'";
+    }
+
+    items() {
+        return this._name + " has " + this._item.description;
     }
 }
 
@@ -149,6 +162,7 @@ class Item {
     constructor(name){
         this._name = name;
         this._description = "";
+        this._power = "";
     }
 
     get name() {
@@ -159,6 +173,10 @@ class Item {
         return this._description;
     }
 
+    get power() {
+        return this._power;
+    }
+
     set name(value) {
         if (value.length < 4) {
           console.log("Name is too short.");
@@ -167,30 +185,42 @@ class Item {
         this._name = value;
       }
     
-      set description(value) {
+    set description(value) {
+    if (value.length < 4) {
+        console.log("Decription is too short.");
+        return;
+    }
+    this._description = value;
+    }
+
+    set power(value) {
         if (value.length < 4) {
-          console.log("Decription is too short.");
+          console.log("Name of power is too short.");
           return;
         }
-        this._description = value;
+        this._name = value;
       }
     
     describe(){
-        return "The " + this._name + " is " + this._description;
+        return "The " + this._name + " is " + this._description + this._power + " power";
     }
 
 }
 
 const Deadwind = new Room("Deadwind Pass");
-Deadwind.description = "a haunted forest and canyon on the edges of the Kingdom of Stormwind in the southern Eastern Kingdoms."
-const Karazhan = new Room("Karazhan");
-Karazhan.description = "a dungeon located in Deadwind Pass. You'd have to be brave or stupid to enter."
+Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter."
+const Karazhan = new Room("Karazhan Dungeon");
+Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls."
 const GuestChambers = new Room("Guest Chambers");
 GuestChambers.description = "a huge church, with a giant sized altar, pulpit and crucifix to match.";
 const ServantsQuarters = new Room("Servant's Quarters");
-ServantsQuarters.description = "stables with a few horses inside them, zombie horses!";
+ServantsQuarters.description = "stables filled with strange looking horses inside them, wait a minute there're zombie horses!";
 const Menagerie = new Room("Menagerie");
 Menagerie.description = "large collections of art works spread all over the place";
+
+const ShadowBlade = new Item("Shadow Blade");
+ShadowBlade.description = "a magical blade filled with magical powers.";
+ShadowBlade.power = "shadow";
 
 Deadwind.linkRoom("north", Karazhan);
 Karazhan.linkRoom("south", Deadwind);
@@ -207,32 +237,47 @@ Maiden.pronoun = "she";
 Maiden.conversation = "You must repent for your sins!!!";
 Maiden.weakness = "Shadow";
 
-const Attumen  = new Enemy("Attumen the Huntsman");
+const Attumen = new Enemy("Attumen the Huntsman");
 Attumen.description = "Undead";
 Attumen.pronoun = "he";
 Attumen.conversation = "You're no match for my firey warhorse Midnight!";
 Attumen.weakness = "Frost";
 
-const Curator  = new Enemy("The Curator");
-Attumen.description = "Mechanical";
-Attumen.pronoun = "he";
-Attumen.conversation = "You shouldn't have come here!!!";
-Attumen.weakness = "Holy";
+const Curator = new Enemy("The Curator");
+Curator.description = "Mechanical";
+Curator.pronoun = "he";
+Curator.conversation = "You shouldn't have come here!!!";
+Curator.weakness = "Holy";
+
+const Sylvanas = new Character("Sylvanas Windrunner");
+Sylvanas.description = "Undead Elf";
+Sylvanas.pronoun = "she";
+Sylvanas.conversation = "Greeting adventurer, I have something that will help you on your travels."
+Sylvanas.item = ShadowBlade;
 
 GuestChambers.character = Maiden;
 ServantsQuarters.character = Attumen;
 Menagerie.character = Curator;
+Deadwind.character = Sylvanas;
 
 function displayRoomInfo(room) {
     let occupantMsg = ""
+    let listItem = ""
     if (room.character === "") {
       occupantMsg = ""
     } else {
       occupantMsg = room.character.describe() + ". " + room.character.converse()
+      
+      if (room.character.item !== ""){
+          listItem = room.character.items();
+      }
     }
+    
   
-    textContent = "<p>" + room.describe() + "</p>" + "<p>" +
-    occupantMsg + "</p>" + "<p>" + room.getDetails() + "</p>";
+    textContent = "<p>" + room.describe() + "</p>" +
+     "<p>" + occupantMsg + "</p>" +
+     "<p>" + listItem + "</p>" +
+     "<p>" + room.getDetails() + "</p>";
   
     document.getElementById("textarea").innerHTML = textContent;
     document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
