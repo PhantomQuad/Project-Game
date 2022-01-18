@@ -12,6 +12,10 @@ class Room {
     get description() {
         return this._description;
     }
+
+    get character() {
+        return this._character
+    }
     
     set name(value) {
         if (value.length < 4) {
@@ -177,24 +181,15 @@ class Item {
 
 }
 
-
-
-function displayRoomInfo(room){
-    textContent = room.describe();
-
-    document.getElementById("textArea").innerHTML = textContent;
-    document.getElementById("usertext").focus();
-}
-
 const Deadwind = new Room("Deadwind Pass");
 Deadwind.description = "a haunted forest and canyon on the edges of the Kingdom of Stormwind in the southern Eastern Kingdoms."
 const Karazhan = new Room("Karazhan");
 Karazhan.description = "a dungeon located in Deadwind Pass. You'd have to be brave or stupid to enter."
-const GuestChambers = new Room("The Guest Chambers");
+const GuestChambers = new Room("Guest Chambers");
 GuestChambers.description = "a huge church, with a giant sized altar, pulpit and crucifix to match.";
 const ServantsQuarters = new Room("Servant's Quarters");
 ServantsQuarters.description = "stables with a few horses inside them, zombie horses!";
-const Menagerie = new Room("The Menagerie");
+const Menagerie = new Room("Menagerie");
 Menagerie.description = "large collections of art works spread all over the place";
 
 Deadwind.linkRoom("north", Karazhan);
@@ -206,19 +201,19 @@ ServantsQuarters.linkRoom("west", Karazhan);
 Karazhan.linkRoom("west", Menagerie);
 Menagerie.linkRoom("east", Karazhan);
 
-const Maiden = new Character("Maiden of Virtue");
+const Maiden = new Enemy("Maiden of Virtue");
 Maiden.description = "Giant";
 Maiden.pronoun = "she";
 Maiden.conversation = "You must repent for your sins!!!";
 Maiden.weakness = "Shadow";
 
-const Attumen  = new Character("Attumen the Huntsman");
+const Attumen  = new Enemy("Attumen the Huntsman");
 Attumen.description = "Undead";
 Attumen.pronoun = "he";
 Attumen.conversation = "You're no match for my firey warhorse Midnight!";
 Attumen.weakness = "Frost";
 
-const Curator  = new Character("The Curator");
+const Curator  = new Enemy("The Curator");
 Attumen.description = "Mechanical";
 Attumen.pronoun = "he";
 Attumen.conversation = "You shouldn't have come here!!!";
@@ -239,15 +234,8 @@ function displayRoomInfo(room) {
     textContent = "<p>" + room.describe() + "</p>" + "<p>" +
     occupantMsg + "</p>" + "<p>" + room.getDetails() + "</p>";
   
-    document.getElementById("textArea").innerHTML = textContent;
+    document.getElementById("textarea").innerHTML = textContent;
     document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
-    document.getElementById("usertext").focus();
-}
-
-function displayRoomInfo(room){
-    textContent = room.describe();
-
-    document.getElementById("textArea").innerHTML = textContent;
     document.getElementById("usertext").focus();
 }
 
@@ -270,5 +258,3 @@ function startGame(){
     }
     });
 }
-
-startGame();
