@@ -247,8 +247,9 @@ function startGame(){
     document.getElementById("feedbackArea").innerHTML = "";
     if (event.key ==="Enter"){
         command = document.getElementById("usertext").value;
+        command = command.toLowerCase()
         const directions = ["north", "south", "east", "west"];
-        if (directions.includes( command.toLowerCase() )) {
+        if (directions.includes(command)) {
             currentRoom = currentRoom.move(command);
             displayRoomInfo(currentRoom);
         } else {
