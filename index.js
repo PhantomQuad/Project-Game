@@ -154,7 +154,7 @@ class Enemy extends Character {
     }
 
     fight(item){
-        if (item = this._weakness){
+        if (item === this._weakness){
             return true;
         } else {
             return false;
@@ -269,7 +269,7 @@ const Maiden = new Enemy("Maiden of Virtue");
 Maiden.description = "Giant";
 Maiden.pronoun = "she";
 Maiden.conversation = "You must repent for your sins!!!";
-Maiden.weakness = "Shadow";
+Maiden.weakness = "shadow";
 Maiden.item = HolyStaff;
 
 // 3rd encounter
@@ -277,7 +277,7 @@ const Curator = new Enemy("The Curator");
 Curator.description = "Mechanical";
 Curator.pronoun = "he";
 Curator.conversation = "You shouldn't have come here!!!";
-Curator.weakness = "Holy";
+Curator.weakness = "holy";
 Curator.item = FrostStaff;
 
 // final encounter
@@ -285,7 +285,7 @@ const Attumen = new Enemy("Attumen the Huntsman");
 Attumen.description = "Undead";
 Attumen.pronoun = "he";
 Attumen.conversation = "You're no match for my firey warhorse Midnight!";
-Attumen.weakness = "Frost";
+Attumen.weakness = "frost";
 Attumen.item = DungeonKey;
 
 // Place the characters
@@ -307,7 +307,6 @@ function displayRoomInfo(room) {
       if (room.character.item !== ""){
           listItem = room.character.items();
           if (room.character.weakness !== undefined){
-            // document.getElementById("feedbackArea").innerHTML = "Found an enemy!";
             doAction = "Would you like to fight " + room.character.name + "?";
           } else {
               doAction = "Would you like to take the item from " + room.character.name + "?";
@@ -343,7 +342,6 @@ function startGame(){
             currentRoom = currentRoom.move(command);
             if (currentRoom === ExitDeadwind){
                 if (Player1.item === DungeonKey) {
-                    document.getElementById("feedbackArea").innerHTML = "You have the key!";
                     displayRoomInfo(currentRoom);
                 } else {
                     document.getElementById("feedbackArea").innerHTML = "The door is locked, you need to find a key...";
@@ -359,18 +357,36 @@ function startGame(){
                 document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
                 displayRoomInfo(currentRoom);
             } else {
-                document.getElementById("feedbackArea").innerHTML = "HA HA HA nice try!!!";
+                document.getElementById("feedbackArea").innerHTML = "HA HA HA nice try!!! Fight me!!!";
                 displayRoomInfo(currentRoom);
             }
-            
         } else if (command === "fight"){
-            
-                document.getElementById("feedbackArea").innerHTML = "you wanna fight";
-                displayRoomInfo(currentRoom);
+            if (currentRoom.character.fight(Player1.item.power)){
+
+                textContent = "<p>" + "You defeated " + currentRoom.character.name + " using " + Player1.item.name + "</p>" +
+                "<p>" + "You overlook the body and notice " + currentRoom.character.item.description + "</p>" +
+                "<p>" + "You can only carry one item, you grab the <b>" + currentRoom.character.item.name + "</b> and drop the <b>" + Player1.item.name + "</b></p>" +
+                "<p>" + "Something tells me this will come in handy..." + "</p>" +
+                "<p>" + currentRoom.getDetails() + "</p>";
+
+                document.getElementById("textarea").innerHTML = textContent;
+                document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
+                document.getElementById("usertext").focus();
+
+                Player1.item = currentRoom.character.item;
+                
+            } else {
+                document.getElementById("textarea").innerHTML = "You Died!!! Refresh to try again.";
+                document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
+                document.getElementById("usertext").focus();
+                return;
+            }
         } else {
             document.getElementById("usertext").value = "";
             document.getElementById("feedbackArea").innerHTML = "that is not a valid command please try again";
+            document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
+            document.getElementById("usertext").focus();
         }
     }
-    });
+});
 }
