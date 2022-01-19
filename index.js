@@ -354,6 +354,7 @@ function startGame(){
         } else if (command === "take") {
             if (currentRoom.character === Sylvanas){
                 Player1.item = currentRoom.character.item;
+                currentRoom.character.item = "";
                 document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
                 displayRoomInfo(currentRoom);
             } else {
