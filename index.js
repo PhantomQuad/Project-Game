@@ -375,6 +375,7 @@ function startGame(){
                 document.getElementById("usertext").focus();
 
                 Player1.item = currentRoom.character.item;
+                currentRoom.character.item = "";
                 
             } else {
                 document.getElementById("textarea").innerHTML = "You Died!!! Refresh to try again.";
