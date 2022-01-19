@@ -307,7 +307,7 @@ function displayRoomInfo(room) {
       if (room.character.item !== ""){
           listItem = room.character.items();
           if (room.character.weakness !== undefined){
-            document.getElementById("feedbackArea").innerHTML = "Found an enemy!";
+            // document.getElementById("feedbackArea").innerHTML = "Found an enemy!";
             doAction = "Would you like to fight " + room.character.name + "?";
           } else {
               doAction = "Would you like to take the item from " + room.character.name + "?";
@@ -354,11 +354,15 @@ function startGame(){
                 displayRoomInfo(currentRoom);
             }
         } else if (command === "take") {
+            if (currentRoom.character === Sylvanas){
+                Player1.item = currentRoom.character.item;
+                document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
+                displayRoomInfo(currentRoom);
+            } else {
+                document.getElementById("feedbackArea").innerHTML = "HA HA HA nice try!!!";
+                displayRoomInfo(currentRoom);
+            }
             
-            Player1.item = currentRoom.character.item;
-            document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
-            console.log(Player1.item);
-            displayRoomInfo(currentRoom);
         } else if (command === "fight"){
             
                 document.getElementById("feedbackArea").innerHTML = "you wanna fight";
