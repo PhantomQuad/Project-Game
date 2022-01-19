@@ -141,9 +141,9 @@ class Enemy extends Character {
       this._weakness = "";
     }
 
-    // get weakness() {
-    //     return this._weakness;
-    // }
+    get weakness() {
+        return this._weakness;
+    }
 
     set weakness(value) {
       if (value.length < 4) {
@@ -198,7 +198,7 @@ class Item {
     }
 
     set power(value) {
-        if (value.length < 4) {
+        if (value.length < 3) {
           console.log("Name of power is too short.");
           return;
         }
@@ -228,21 +228,21 @@ ExitDeadwind.description = "the sun is just coming up over the horizen. Well don
 // create items
 const ShadowBlade = new Item("Shadow Blade");
 ShadowBlade.description = "a magical blade filled with magical powers.";
-ShadowBlade.power = "shadow";
+ShadowBlade._power = "shadow";
 
 const FrostStaff = new Item("Frost Staff");
-FrostStaff.description = "an ancient staff, cold to touch.";
-FrostStaff.power = "frost";
+FrostStaff.description = "an ancient staff, it looks cold to touch.";
+FrostStaff._power = "frost";
 
 const HolyStaff = new Item("Holy Staff");
 HolyStaff.description = "a magnificient and godly giant staff.";
-HolyStaff.power = "holy";
+HolyStaff._power = "holy";
 
 const DungeonKey = new Item("Dungeon Key");
 DungeonKey.description = "a key to allow you to exit the dungeon.";
-DungeonKey.power = "key";
+DungeonKey._power = "key";
 
-// link rooms 
+// link rooms
 Deadwind.linkRoom("north", Karazhan);
 Karazhan.linkRoom("south", ExitDeadwind);
 Karazhan.linkRoom("north", GuestChambers);
@@ -253,6 +253,9 @@ Karazhan.linkRoom("west", Menagerie);
 Menagerie.linkRoom("east", Karazhan);
 
 // create characters
+
+// You
+const Player1 = new Character("Player1");
 
 // 1st encounter
 const Sylvanas = new Character("Sylvanas Windrunner");
@@ -293,8 +296,9 @@ Deadwind.character = Sylvanas;
 
 // Display all info about the room
 function displayRoomInfo(room) {
-    let occupantMsg = ""
-    let listItem = ""
+    let occupantMsg = "";
+    let listItem = "";
+    let doAction = "";
     if (room.character === "") {
       occupantMsg = ""
     } else {
@@ -302,6 +306,13 @@ function displayRoomInfo(room) {
       
       if (room.character.item !== ""){
           listItem = room.character.items();
+          if (room.character.weakness !== undefined){
+            document.getElementById("feedbackArea").innerHTML = "Found an enemy!";
+            doAction = "Would you like to fight " + room.character.name + "?";
+          } else {
+              doAction = "Would you like to take the item from " + room.character.name + "?";
+
+          }
       }
     }
     
@@ -309,6 +320,7 @@ function displayRoomInfo(room) {
     textContent = "<p>" + room.describe() + "</p>" +
      "<p>" + occupantMsg + "</p>" +
      "<p>" + listItem + "</p>" +
+     "<p>" + doAction + "</p>" +
      "<p>" + room.getDetails() + "</p>";
   
     document.getElementById("textarea").innerHTML = textContent;
@@ -330,10 +342,27 @@ function startGame(){
         if (directions.includes(command)) {
             currentRoom = currentRoom.move(command);
             if (currentRoom === ExitDeadwind){
-                document.getElementById("feedbackArea").innerHTML = "You are trying to exit without the key!";
+                if (Player1.item === DungeonKey) {
+                    document.getElementById("feedbackArea").innerHTML = "You have the key!";
+                    displayRoomInfo(currentRoom);
+                } else {
+                    document.getElementById("feedbackArea").innerHTML = "The door is locked, you need to find a key...";
+                    currentRoom = Karazhan;
+                    displayRoomInfo(currentRoom);
+                }
             } else {
                 displayRoomInfo(currentRoom);
             }
+        } else if (command === "take") {
+            
+            Player1.item = currentRoom.character.item;
+            document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
+            console.log(Player1.item);
+            displayRoomInfo(currentRoom);
+        } else if (command === "fight"){
+            
+                document.getElementById("feedbackArea").innerHTML = "you wanna fight";
+                displayRoomInfo(currentRoom);
         } else {
             document.getElementById("usertext").value = "";
             document.getElementById("feedbackArea").innerHTML = "that is not a valid command please try again";
