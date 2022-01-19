@@ -182,7 +182,7 @@ class Item {
     }
 
     set name(value) {
-        if (value.length < 4) {
+        if (value.length < 3) {
           console.log("Name is too short.");
           return;
         }
@@ -211,26 +211,40 @@ class Item {
 
 }
 
-// create areas/rooms
+// create rooms
 const Deadwind = new Room("Deadwind Pass");
-Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter."
+Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter.";
 const Karazhan = new Room("Karazhan Dungeon");
-Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls."
+Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls.";
 const GuestChambers = new Room("Guest Chambers");
 GuestChambers.description = "a huge church, with a giant sized altar, pulpit and crucifix to match.";
 const ServantsQuarters = new Room("Servant's Quarters");
 ServantsQuarters.description = "stables filled with strange looking horses inside them, wait a minute there're zombie horses!";
 const Menagerie = new Room("Menagerie");
 Menagerie.description = "large collections of art works spread all over the place";
+const ExitDeadwind = new Room("Deadwind Pass");
+ExitDeadwind.description = "the sun is just coming up over the horizen. Well done adventurer you have managed to beat Karazhan";
 
 // create items
 const ShadowBlade = new Item("Shadow Blade");
 ShadowBlade.description = "a magical blade filled with magical powers.";
 ShadowBlade.power = "shadow";
 
+const FrostStaff = new Item("Frost Staff");
+FrostStaff.description = "an ancient staff, cold to touch.";
+FrostStaff.power = "frost";
+
+const HolyStaff = new Item("Holy Staff");
+HolyStaff.description = "a magnificient and godly giant staff.";
+HolyStaff.power = "holy";
+
+const DungeonKey = new Item("Dungeon Key");
+DungeonKey.description = "a key to allow you to exit the dungeon.";
+DungeonKey.power = "key";
+
 // link rooms
 Deadwind.linkRoom("north", Karazhan);
-Karazhan.linkRoom("south", Deadwind);
+Karazhan.linkRoom("south", ExitDeadwind);
 Karazhan.linkRoom("north", GuestChambers);
 GuestChambers.linkRoom("south", Karazhan);
 Karazhan.linkRoom("east", ServantsQuarters);
@@ -239,29 +253,37 @@ Karazhan.linkRoom("west", Menagerie);
 Menagerie.linkRoom("east", Karazhan);
 
 // create characters
-const Maiden = new Enemy("Maiden of Virtue");
-Maiden.description = "Giant";
-Maiden.pronoun = "she";
-Maiden.conversation = "You must repent for your sins!!!";
-Maiden.weakness = "Shadow";
 
-const Attumen = new Enemy("Attumen the Huntsman");
-Attumen.description = "Undead";
-Attumen.pronoun = "he";
-Attumen.conversation = "You're no match for my firey warhorse Midnight!";
-Attumen.weakness = "Frost";
-
-const Curator = new Enemy("The Curator");
-Curator.description = "Mechanical";
-Curator.pronoun = "he";
-Curator.conversation = "You shouldn't have come here!!!";
-Curator.weakness = "Holy";
-
+// 1st encounter
 const Sylvanas = new Character("Sylvanas Windrunner");
 Sylvanas.description = "Undead Elf";
 Sylvanas.pronoun = "she";
 Sylvanas.conversation = "Greeting adventurer, I have something that will help you on your travels."
 Sylvanas.item = ShadowBlade;
+
+// 2nd encounter
+const Maiden = new Enemy("Maiden of Virtue");
+Maiden.description = "Giant";
+Maiden.pronoun = "she";
+Maiden.conversation = "You must repent for your sins!!!";
+Maiden.weakness = "Shadow";
+Maiden.item = HolyStaff;
+
+// 3rd encounter
+const Curator = new Enemy("The Curator");
+Curator.description = "Mechanical";
+Curator.pronoun = "he";
+Curator.conversation = "You shouldn't have come here!!!";
+Curator.weakness = "Holy";
+Curator.item = FrostStaff;
+
+// final encounter
+const Attumen = new Enemy("Attumen the Huntsman");
+Attumen.description = "Undead";
+Attumen.pronoun = "he";
+Attumen.conversation = "You're no match for my firey warhorse Midnight!";
+Attumen.weakness = "Frost";
+Attumen.item = DungeonKey;
 
 // Place the characters
 GuestChambers.character = Maiden;
@@ -307,7 +329,11 @@ function startGame(){
         const directions = ["north", "south", "east", "west"];
         if (directions.includes(command)) {
             currentRoom = currentRoom.move(command);
-            displayRoomInfo(currentRoom);
+            if (currentRoom === ExitDeadwind){
+                document.getElementById("feedbackArea").innerHTML = "You are trying to exit without the key!";
+            } else {
+                displayRoomInfo(currentRoom);
+            }
         } else {
             document.getElementById("usertext").value = "";
             document.getElementById("feedbackArea").innerHTML = "that is not a valid command please try again";
