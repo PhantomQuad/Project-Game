@@ -49,7 +49,7 @@ class Room {
         const entries = Object.entries(this._linkedRooms);
         let details = []
         for (const [direction, room] of entries) {
-            let text = " The " + room._name + " is to the " + direction;
+            let text = " '" + direction + "' for the " + room._name;
             details.push(text);
         }
         return details;
@@ -309,7 +309,7 @@ function displayRoomInfo(room) {
           if (room.character.weakness !== undefined){
             doAction = "Would you like to fight " + room.character.name + "?";
           } else {
-              doAction = "Would you like to take the item from " + room.character.name + "?";
+              doAction = "Would you like to take the item from " + room.character.name + "?<br/>Enter 'take' or move on";
 
           }
       }
