@@ -140,7 +140,11 @@ class Enemy extends Character {
       super(name);
       this._weakness = "";
     }
-  
+
+    // get weakness() {
+    //     return this._weakness;
+    // }
+
     set weakness(value) {
       if (value.length < 4) {
         console.log("Decription is too short.");
@@ -207,6 +211,7 @@ class Item {
 
 }
 
+// create areas/rooms
 const Deadwind = new Room("Deadwind Pass");
 Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter."
 const Karazhan = new Room("Karazhan Dungeon");
@@ -218,10 +223,12 @@ ServantsQuarters.description = "stables filled with strange looking horses insid
 const Menagerie = new Room("Menagerie");
 Menagerie.description = "large collections of art works spread all over the place";
 
+// create items
 const ShadowBlade = new Item("Shadow Blade");
 ShadowBlade.description = "a magical blade filled with magical powers.";
 ShadowBlade.power = "shadow";
 
+// link rooms
 Deadwind.linkRoom("north", Karazhan);
 Karazhan.linkRoom("south", Deadwind);
 Karazhan.linkRoom("north", GuestChambers);
@@ -231,6 +238,7 @@ ServantsQuarters.linkRoom("west", Karazhan);
 Karazhan.linkRoom("west", Menagerie);
 Menagerie.linkRoom("east", Karazhan);
 
+// create characters
 const Maiden = new Enemy("Maiden of Virtue");
 Maiden.description = "Giant";
 Maiden.pronoun = "she";
@@ -255,11 +263,13 @@ Sylvanas.pronoun = "she";
 Sylvanas.conversation = "Greeting adventurer, I have something that will help you on your travels."
 Sylvanas.item = ShadowBlade;
 
+// Place the characters
 GuestChambers.character = Maiden;
 ServantsQuarters.character = Attumen;
 Menagerie.character = Curator;
 Deadwind.character = Sylvanas;
 
+// Display all info about the room
 function displayRoomInfo(room) {
     let occupantMsg = ""
     let listItem = ""
@@ -284,6 +294,7 @@ function displayRoomInfo(room) {
     document.getElementById("usertext").focus();
 }
 
+// Start the game
 function startGame(){
     currentRoom = Deadwind;
     displayRoomInfo(currentRoom);
