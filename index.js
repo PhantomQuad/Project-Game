@@ -49,7 +49,7 @@ class Room {
         const entries = Object.entries(this._linkedRooms);
         let details = []
         for (const [direction, room] of entries) {
-            let text = " '" + direction + "' for the " + room._name;
+            let text = " <span id='guide'>" + direction + "</span> for the " + room._name;
             details.push(text);
         }
         return details;
@@ -104,7 +104,7 @@ class Character {
     
     set description(value) {
         if (value.length < 4) {
-          console.log("Decription is too short.");
+          console.log("Description is too short.");
           return;
         }
         this._description = value;
@@ -123,7 +123,7 @@ class Character {
       }
     
     describe(){
-        return "You have met " + this._name + ", " + this._name + " is " + this._description;
+        return "You have met " + this._name + ", " + this._pronoun + " is a " + this._description;
     }
 
     converse() {
@@ -147,7 +147,7 @@ class Enemy extends Character {
 
     set weakness(value) {
       if (value.length < 4) {
-        console.log("Decription is too short.");
+        console.log("Description is too short.");
         return;
       }
       this._weakness = value;
@@ -191,7 +191,7 @@ class Item {
     
     set description(value) {
     if (value.length < 4) {
-        console.log("Decription is too short.");
+        console.log("Description is too short.");
         return;
     }
     this._description = value;
@@ -215,7 +215,7 @@ class Item {
 const Deadwind = new Room("Deadwind Pass");
 Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter.";
 const Karazhan = new Room("Karazhan Dungeon");
-Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls.";
+Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls.<br/>The door has looked behind you, you need to find the key or you'll be trapped!";
 const GuestChambers = new Room("Guest Chambers");
 GuestChambers.description = "a huge church, with a giant sized altar, pulpit and crucifix to match.";
 const ServantsQuarters = new Room("Servant's Quarters");
@@ -223,7 +223,7 @@ ServantsQuarters.description = "stables filled with strange looking horses insid
 const Menagerie = new Room("Menagerie");
 Menagerie.description = "large collections of art works spread all over the place";
 const ExitDeadwind = new Room("Deadwind Pass");
-ExitDeadwind.description = "the sun is just coming up over the horizen. Well done adventurer you have managed to beat Karazhan";
+ExitDeadwind.description = "the sun is just coming up over the horizon. You Well done adventurer you have managed to beat Karazhan";
 
 // create items
 const ShadowBlade = new Item("Shadow Blade");
@@ -235,7 +235,7 @@ FrostStaff.description = "an ancient staff, it looks cold to touch.";
 FrostStaff._power = "frost";
 
 const HolyStaff = new Item("Holy Staff");
-HolyStaff.description = "a magnificient and godly giant staff.";
+HolyStaff.description = "a magnificent and godly giant staff.";
 HolyStaff._power = "holy";
 
 const DungeonKey = new Item("Dungeon Key");
@@ -260,14 +260,14 @@ const Player1 = new Character("Player1");
 // 1st encounter
 const Sylvanas = new Character("Sylvanas Windrunner");
 Sylvanas.description = "Undead Elf";
-Sylvanas.pronoun = "she";
+Sylvanas._pronoun = "she";
 Sylvanas.conversation = "Greeting adventurer, I have something that will help you on your travels."
 Sylvanas.item = ShadowBlade;
 
 // 2nd encounter
 const Maiden = new Enemy("Maiden of Virtue");
 Maiden.description = "Giant";
-Maiden.pronoun = "she";
+Maiden._pronoun = "she";
 Maiden.conversation = "You must repent for your sins!!!";
 Maiden.weakness = "shadow";
 Maiden.item = HolyStaff;
@@ -275,7 +275,7 @@ Maiden.item = HolyStaff;
 // 3rd encounter
 const Curator = new Enemy("The Curator");
 Curator.description = "Mechanical";
-Curator.pronoun = "he";
+Curator._pronoun = "he";
 Curator.conversation = "You shouldn't have come here!!!";
 Curator.weakness = "holy";
 Curator.item = FrostStaff;
@@ -283,8 +283,8 @@ Curator.item = FrostStaff;
 // final encounter
 const Attumen = new Enemy("Attumen the Huntsman");
 Attumen.description = "Undead";
-Attumen.pronoun = "he";
-Attumen.conversation = "You're no match for my firey warhorse Midnight!";
+Attumen._pronoun = "he";
+Attumen.conversation = "You're no match for my fiery warhorse Midnight!";
 Attumen.weakness = "frost";
 Attumen.item = DungeonKey;
 
@@ -302,25 +302,25 @@ function displayRoomInfo(room) {
     if (room.character === "") {
       occupantMsg = ""
     } else {
-      occupantMsg = room.character.describe() + ". " + room.character.converse()
+      occupantMsg = room.character.describe() + ".</br> " + room.character.converse()
       
       if (room.character.item !== ""){
           listItem = room.character.items();
           if (room.character.weakness !== undefined){
-            doAction = "Would you like to fight " + room.character.name + "?";
+            doAction = "Would you like to <span id='guide'>fight</span> " + room.character.name + "?";
           } else {
-              doAction = "Would you like to take the item from " + room.character.name + "?<br/>Enter 'take' or move on";
+              doAction = "Would you like to <span id='guide'>take</span> the item from " + room.character.name + "?";
 
           }
       }
     }
     
   
-    textContent = "<p>" + room.describe() + "</p>" +
-     "<p>" + occupantMsg + "</p>" +
-     "<p>" + listItem + "</p>" +
-     "<p>" + doAction + "</p>" +
-     "<p>" + room.getDetails() + "</p>";
+    textContent = "<div class='col' id='col1-1'>" + room.describe() + "<div></br>" +
+     "<div class='col' id='col1-2'>" + occupantMsg + "<div></br>" +
+     "<div class='col' id='col1-3'>" + listItem + "<div>" +
+     "<div class='col' id='col1-4'>" + doAction + "<div></br>" +
+     "<div class='col' id='col1-5'>" + room.getDetails() + "<div>";
   
     document.getElementById("textarea").innerHTML = textContent;
     document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
@@ -369,11 +369,11 @@ function startGame(){
         } else if (command === "fight"){
             if (currentRoom.character.fight(Player1.item.power)){
 
-                textContent = "<p>" + "You defeated " + currentRoom.character.name + " using " + Player1.item.name + "</p>" +
-                "<p>" + "You overlook the body and notice " + currentRoom.character.item.description + "</p>" +
-                "<p>" + "You can only carry one item, you grab the <b>" + currentRoom.character.item.name + "</b> and drop the <b>" + Player1.item.name + "</b></p>" +
-                "<p>" + "Something tells me this will come in handy..." + "</p>" +
-                "<p>" + currentRoom.getDetails() + "</p>";
+                textContent = "<div class='col' id='col1-1'>" + "You defeated " + currentRoom.character.name + " using " + Player1.item.name + "</div></br>" +
+                "<div class='col' id='col1-2'>" + "You overlook the body and notice " + currentRoom.character.item.description + "</div></br>" +
+                "<div class='col' id='col1-3'>" + "You can only carry one item, you grab the <span id='item'>" + currentRoom.character.item.name + "</span> and drop the <span id='item'>" + Player1.item.name + "</span></div>" +
+                "<div class='col' id='col1-4'>" + "Something tells me this will come in handy..." + "</div></br>" +
+                "<div class='col' id='col1-5'>" + currentRoom.getDetails() + "</div>";
 
                 document.getElementById("textarea").innerHTML = textContent;
                 document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
@@ -383,7 +383,7 @@ function startGame(){
                 currentRoom.character = "";
                 
             } else {
-                document.getElementById("textarea").innerHTML = "You Died!!! Refresh to try again.";
+                document.getElementById("textarea").innerHTML = "<span id='died'>You Died!!! Refresh to try again.</span>";
                 document.getElementById("buttonarea").innerHTML = '><input type="text" id="usertext" />';
                 document.getElementById("usertext").focus();
                 return;

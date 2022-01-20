@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body>
-    <div class="container">
+      <div class="container">
         <div id="gamearea">
           <div id="title" >
-            <div class="col" id="col1">
+            <div class="col" id="col0">
               <h1 class="text-center">Eastern Kingdoms Adventure</h1>
               <br />
             </div>
@@ -22,23 +22,23 @@
             
               <!--intro content-->
               <div class="justify-content-center mx-auto">
+                <div class="col" id="col1">
+                  <p id="textarea" class="text-center">Click the button to travel to the haunted forest and canyon on the edges of the Kingdom of Stormwind in the southern Eastern Kingdoms.<br/><br/>Enter Deadwind Pass if you dare!<br /><br/>Any actions that you can make will be in <span id="guide">yellow</span></p><br/><br/>
+                </div>
                 <div class="col" id="col2">
-                </div><p id="textarea" class="text-center">Click the button to travel to the haunted forest and canyon on the edges of the Kingdom of Stormwind in the southern Eastern Kingdoms.<br/><br/>Enter Deadwind Pass if you dare!</p><br /><br />
-                </div>
-                <div class="col" id="col3">
-                <div id="buttonarea">
-                  <input id="startbutton" type="button" value="Start Game" class="btn btn-success text-center" onclick="startGame()"/>
-                </div>
+                  <div id="buttonarea">
+                    <input id="startbutton" type="button" value="Start Game" class="btn btn-success text-center" onclick="startGame()"/>
+                  </div>
                 </div>
               </div>
               <form id="gameform">
                 <div class="col" id="col4">
-                <div id="userentry">
-                </div>
+                  <div id="userentry">
+                  </div>
                 </div>
               </form>
               <div class="col" id="col5">
-              <div id="feedbackArea"></div>
+                <div id="feedbackArea"></div>
               </div>
           </div>
         </div>

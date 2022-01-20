@@ -6,7 +6,7 @@ body{
     {
       background-color: black;
       border-radius: 10px;
-      color: white;
+      /* color: white; */
       padding:20px;
     }
   
@@ -21,3 +21,49 @@ body{
       border-color: #719ECE;
       /*box-shadow: 0 0 10px #719ECE;*/
     }
+
+#col0 {
+  color: white;
+}
+
+#col1 {
+  color: white;
+}
+
+#col1-1 {
+  color: white;
+}
+
+#col1-2 {
+  color: white;
+}
+
+#col1-3 {
+  color: green;
+}
+
+#col1-4 {
+  color: green;
+}
+
+#col1-5 {
+  color: white;
+}
+
+#guide {
+  color: yellow;
+  font-weight: 900;
+}
+
+#item {
+  color:purple;
+  font-weight: 900;
+}
+
+#feedbackArea {
+  color: white;
+}
+
+#died {
+  color: red;
+}
