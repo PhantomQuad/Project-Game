@@ -358,8 +358,13 @@ function startGame(){
                 document.getElementById("feedbackArea").innerHTML = "You take " + currentRoom.character.name + "'s " + Player1.item.name;
                 displayRoomInfo(currentRoom);
             } else {
-                document.getElementById("feedbackArea").innerHTML = "HA HA HA nice try!!! Fight me!!!";
-                displayRoomInfo(currentRoom);
+                if (currentRoom.character){
+                    document.getElementById("feedbackArea").innerHTML = "HA HA HA nice try!!! Fight me!!!";
+                    displayRoomInfo(currentRoom);
+                } else {
+                    document.getElementById("feedbackArea").innerHTML = "Take what from who exactly?";
+                    displayRoomInfo(currentRoom);
+                }
             }
         } else if (command === "fight"){
             if (currentRoom.character.fight(Player1.item.power)){
@@ -375,7 +380,7 @@ function startGame(){
                 document.getElementById("usertext").focus();
 
                 Player1.item = currentRoom.character.item;
-                currentRoom.character.item = "";
+                currentRoom.character = "";
                 
             } else {
                 document.getElementById("textarea").innerHTML = "You Died!!! Refresh to try again.";
