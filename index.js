@@ -215,7 +215,7 @@ class Item {
 const Deadwind = new Room("Deadwind Pass");
 Deadwind.description = "a dungeon called Karazhan. You'd have to be brave or stupid to enter.";
 const Karazhan = new Room("Karazhan Dungeon");
-Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls.<br/>The door has looked behind you, you need to find the key or you'll be trapped!";
+Karazhan.description = "rodents running in all directions, and a blanket of cobwebs covering the walls.<br/><br/>The exit is locked, you need to find the key or you'll be trapped!";
 const GuestChambers = new Room("Guest Chambers");
 GuestChambers.description = "a huge church, with a giant sized altar, pulpit and crucifix to match.";
 const ServantsQuarters = new Room("Servant's Quarters");
