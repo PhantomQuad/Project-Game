@@ -1,5 +1,4 @@
 # Project-Game
-OOP game
 
 Welcome to our text-based adventure game, it was designed using object-oriented programming!
 
